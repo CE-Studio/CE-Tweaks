@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c428nc5q7j8vs"]
+
+[ext_resource type="Script" uid="uid://bpj4ikdjg2o1" path="res://addons/ce-tweaks/parts/scene_saves.gd" id="1_1yc8n"]
+[ext_resource type="Texture2D" uid="uid://0ux61x7u61r2" path="res://addons/ce-tweaks/tex/add.tres" id="2_r1kdo"]
+
+[node name="SceneSaves" type="PanelContainer" unique_id=885294720]
+script = ExtResource("1_1yc8n")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1938204236]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1366011370]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=1856339443]
+layout_mode = 2
+tooltip_text = "Add Scene Bookmark"
+icon = ExtResource("2_r1kdo")
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_add_pressed"]

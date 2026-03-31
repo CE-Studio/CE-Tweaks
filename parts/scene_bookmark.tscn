@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dtlw277icxep0"]
+
+[ext_resource type="Texture2D" uid="uid://bdebhwfexk3cn" path="res://addons/ce-tweaks/tex/scenefile.tres" id="1_cmrup"]
+[ext_resource type="Script" uid="uid://uyjftdn1m065" path="res://addons/ce-tweaks/parts/scene_bookmark.gd" id="1_earsb"]
+
+[node name="SceneBookmark" type="Button" unique_id=1708979496]
+icon = ExtResource("1_cmrup")
+script = ExtResource("1_earsb")
