@@ -3,8 +3,13 @@
 extends EditorPlugin
 
 
-const SETTING_NAME = "CE-Tweaks/bookmarks"
-const SETTING_DEFAULT:PackedStringArray = []
+const _EPACKED:PackedStringArray = []
+const _CEPACKED:PackedColorArray = []
+
+const SETTINGS = [
+	["CE-Tweaks/bookmarks", _EPACKED],
+	["CE-Tweaks/bookmark_colors", _CEPACKED],
+]
 
 
 var buttons:PanelContainer
@@ -21,9 +26,10 @@ func _disable_plugin() -> void:
 
 
 func _enter_tree():
-	if not ProjectSettings.has_setting(SETTING_NAME):
-		ProjectSettings.set_setting(SETTING_NAME, SETTING_DEFAULT)
-	ProjectSettings.set_initial_value(SETTING_NAME, SETTING_DEFAULT)
+	for i in SETTINGS:
+		if not ProjectSettings.has_setting(i[0]):
+			ProjectSettings.set_setting(i[0], i[1])
+		ProjectSettings.set_initial_value(i[0], i[1])
 	if not is_instance_valid(buttons):
 		var b := EditorInterface.get_base_control()
 		var button_parent:HBoxContainer = b.get_child(0).get_child(0).get_child(4).get_child(0)
