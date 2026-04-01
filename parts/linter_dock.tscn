@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bm3nbfr8dy454"]
+
+[ext_resource type="Script" uid="uid://chkg3mt7slg5w" path="res://addons/ce-tweaks/parts/linter_dock.gd" id="1_hhhu4"]
+
+[node name="CE-Lint" type="HSplitContainer" unique_id=1255133997]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hhhu4")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=911268721]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=47533111]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="." unique_id=369468583]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer2" unique_id=2078438017]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="ScrollContainer2/VBoxContainer" unique_id=177972849]
+layout_mode = 2
+text = "Scan All"
