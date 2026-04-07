@@ -9,6 +9,8 @@ const _CEPACKED:PackedColorArray = []
 const SETTINGS = [
 	["CE-Tweaks/bookmarks", _EPACKED],
 	["CE-Tweaks/bookmark_colors", _CEPACKED],
+	["CE-Tweaks/linter_licence", "AGPL-3.0-only"],
+	["CE-Tweaks/linter_licence_blurb", "Copyright {year} CE-Studio: {licence}"]
 ]
 
 
