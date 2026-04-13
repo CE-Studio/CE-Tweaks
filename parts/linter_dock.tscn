@@ -8,6 +8,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+split_offsets = PackedInt32Array(300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+split_offset = 300
 script = ExtResource("1_hhhu4")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=911268721]
@@ -28,6 +30,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="ScrollContainer2/VBoxContainer" unique_id=177972849]
+[node name="Scan" type="Button" parent="ScrollContainer2/VBoxContainer" unique_id=177972849]
 layout_mode = 2
 text = "Scan All"
+
+[node name="Clear" type="Button" parent="ScrollContainer2/VBoxContainer" unique_id=1215485524]
+layout_mode = 2
+text = "Clear All"
+
+[connection signal="pressed" from="ScrollContainer2/VBoxContainer/Scan" to="." method="_on_scan_pressed"]
+[connection signal="pressed" from="ScrollContainer2/VBoxContainer/Clear" to="." method="_on_clear_pressed"]

@@ -42,6 +42,7 @@ func _enter_tree():
 		button_parent.move_child(buttons, 0)
 
 	var linter:HSplitContainer = preload("uid://bm3nbfr8dy454").instantiate()
+	linter.running = true
 	lint_dock = EditorDock.new()
 	lint_dock.add_child(linter)
 	lint_dock.title = "CE-Lint"
