@@ -57,6 +57,15 @@ func scan_script(nscript:Script) -> void:
 		if line.begins_with("func "):
 			if (not line.begins_with("func _")) and (not prev_line.begins_with("## ")):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented function!", i + 1)
+		elif line.begins_with("static func "):
+			if (not line.begins_with("static func _")) and (not prev_line.begins_with("## ")):
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static function!", i + 1)
+		elif line.begins_with("var "):
+			if (not line.begins_with("var _")) and (not prev_line.begins_with("## ")):
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i + 1)
+		elif line.begins_with("static var "):
+			if (not line.begins_with("static var _")) and (not prev_line.begins_with("## ")):
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static variable!", i + 1)
 
 
 func _on_clear_pressed() -> void:
