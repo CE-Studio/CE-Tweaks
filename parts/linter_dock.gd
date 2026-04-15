@@ -14,6 +14,13 @@ func _ready() -> void:
 		EditorInterface.get_script_editor().editor_script_changed.connect(scan_script)
 
 
+func _rsaved(r:Resource) -> void:
+	print(r)
+	if is_instance_valid(r):
+		if r is GDScript:
+			scan_script(r, true)
+
+
 func add_issue(sp:String, what:String, lnum:int, sugg := "") -> void:
 	var lbl := Button.new()
 	lbl.text = sp + "\n" + what + "\n" + sugg
@@ -29,8 +36,8 @@ func _nav_to(pth:String, pos:int) -> void:
 		EditorInterface.edit_script(load(pth), pos)
 
 
-func scan_script(nscript:Script) -> void:
-	if nscript.resource_path == last:
+func scan_script(nscript:Script, force := false) -> void:
+	if (nscript.resource_path == last) and (not force):
 		return
 	last = nscript.resource_path
 	if not nscript is GDScript:
@@ -60,6 +67,12 @@ func scan_script(nscript:Script) -> void:
 		elif line.begins_with("static func "):
 			if (not line.begins_with("static func _")) and (not prev_line.begins_with("## ")):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static function!", i)
+		elif line.begins_with("@abstract func "):
+			if (not prev_line.begins_with("## ")):
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented abstract function!", i)
+		elif line.begins_with("@onready var "):
+			if (not line.begins_with("@onready var _")) and (not prev_line.begins_with("## ")):
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i)
 		else:
 			line = source[i]
 			if line.begins_with("var "):
@@ -98,4 +111,4 @@ func _recur_scan(pth:String) -> void:
 			else:
 				s = load(pth + "/" + i)
 			if s is GDScript:
-				scan_script(s)
+				scan_script(s, true)

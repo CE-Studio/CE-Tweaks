@@ -48,6 +48,7 @@ func _enter_tree():
 	lint_dock.title = "CE-Lint"
 	lint_dock.default_slot = EditorDock.DOCK_SLOT_BOTTOM
 	lint_dock.available_layouts = EditorDock.DOCK_LAYOUT_HORIZONTAL | EditorDock.DOCK_LAYOUT_FLOATING
+	resource_saved.connect(linter._rsaved)
 	add_dock(lint_dock)
 
 
