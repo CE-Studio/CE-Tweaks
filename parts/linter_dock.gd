@@ -63,25 +63,26 @@ func scan_script(nscript:Script, force := false) -> void:
 		var line := source[i].strip_edges()
 		if prev_line == "#lint-ok":
 			continue
+		if prev_line.begins_with("## "):
+			continue
 		if line.begins_with("func "):
-			if (not line.begins_with("func _")) and (not prev_line.begins_with("## ")):
+			if not line.begins_with("func _"):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented function!", i + 1)
 		elif line.begins_with("static func "):
-			if (not line.begins_with("static func _")) and (not prev_line.begins_with("## ")):
+			if not line.begins_with("static func _"):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static function!", i)
 		elif line.begins_with("@abstract func "):
-			if (not prev_line.begins_with("## ")):
-				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented abstract function!", i)
+			add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented abstract function!", i)
 		elif line.begins_with("@onready var "):
-			if (not line.begins_with("@onready var _")) and (not prev_line.begins_with("## ")):
+			if not line.begins_with("@onready var _"):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i)
 		else:
 			line = source[i]
 			if line.begins_with("var "):
-				if (not line.begins_with("var _")) and (not prev_line.begins_with("## ")):
+				if not line.begins_with("var _"):
 					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i + 1)
 			elif line.begins_with("static var "):
-				if (not line.begins_with("static var _")) and (not prev_line.begins_with("## ")):
+				if not line.begins_with("static var _"):
 					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static variable!", i + 1)
 
 
