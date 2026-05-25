@@ -61,6 +61,8 @@ func scan_script(nscript:Script, force := false) -> void:
 	for i in source.size():
 		var prev_line := source[i - 1].strip_edges()
 		var line := source[i].strip_edges()
+		if prev_line == "#lint-ok":
+			continue
 		if line.begins_with("func "):
 			if (not line.begins_with("func _")) and (not prev_line.begins_with("## ")):
 				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented function!", i + 1)
