@@ -3,10 +3,41 @@ extends HSplitContainer
 
 
 @onready var errorlist:VBoxContainer = $ScrollContainer/VBoxContainer
+@onready var filters:Dictionary[LintButton.BType, CheckButton] = {
+	LintButton.BType.COPY: %Copyright,
+	LintButton.BType.DOCU: %Documentation,
+}
 
 
 var last:String
 var running := false
+
+
+class LintButton extends Button:
+	enum BType {
+		COPY,
+		DOCU,
+	}
+
+
+	var btype := BType.COPY
+	var filters:Dictionary[BType, CheckButton]
+
+
+	func _init(filters:Dictionary[BType, CheckButton], btype:BType):
+		self.filters = filters
+		self.btype = btype
+
+
+	func _ready() -> void:
+		var target := filters[btype]
+		visible = target.button_pressed
+		target.pressed.connect(_filter_pressed)
+
+
+	func _filter_pressed():
+		var target := filters[btype]
+		visible = target.button_pressed
 
 
 func _ready() -> void:
@@ -21,8 +52,8 @@ func _rsaved(r:Resource) -> void:
 			scan_script(r, true)
 
 
-func add_issue(sp:String, what:String, lnum:int, sugg := "") -> void:
-	var lbl := Button.new()
+func add_issue(sp:String, what:String, lnum:int, btype:LintButton.BType, sugg := "") -> void:
+	var lbl := LintButton.new(filters, btype)
 	lbl.text = sp + "\n" + what + "\n" + sugg
 	lbl.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	lbl.set_meta(&"pth", sp)
@@ -57,7 +88,7 @@ func scan_script(nscript:Script, force := false) -> void:
 	var year:int = Time.get_datetime_dict_from_system().year
 	licence_line = licence_line.format({"year":year, "licence":licence})
 	if source[0].strip_edges() != licence_line:
-		add_issue(script.resource_path, "Line 1: Copyright incorrect or missing!", 1, licence_line)
+		add_issue(script.resource_path, "Line 1: Copyright incorrect or missing!", 1, LintButton.BType.COPY, licence_line)
 	for i in source.size():
 		var prev_line := source[i - 1].strip_edges()
 		var line := source[i].strip_edges()
@@ -67,23 +98,23 @@ func scan_script(nscript:Script, force := false) -> void:
 			continue
 		if line.begins_with("func "):
 			if not line.begins_with("func _"):
-				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented function!", i + 1)
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented function!", i + 1, LintButton.BType.DOCU)
 		elif line.begins_with("static func "):
 			if not line.begins_with("static func _"):
-				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static function!", i)
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static function!", i, LintButton.BType.DOCU)
 		elif line.begins_with("@abstract func "):
-			add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented abstract function!", i)
+			add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented abstract function!", i, LintButton.BType.DOCU)
 		elif line.begins_with("@onready var "):
 			if not line.begins_with("@onready var _"):
-				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i)
+				add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i, LintButton.BType.DOCU)
 		else:
 			line = source[i]
 			if line.begins_with("var "):
 				if not line.begins_with("var _"):
-					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i + 1)
+					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented variable!", i + 1, LintButton.BType.DOCU)
 			elif line.begins_with("static var "):
 				if not line.begins_with("static var _"):
-					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static variable!", i + 1)
+					add_issue(script.resource_path, "Line " + str(i + 1) + ": Undocumented static variable!", i + 1, LintButton.BType.DOCU)
 
 
 func _on_clear_pressed() -> void:
